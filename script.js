@@ -4,9 +4,13 @@ let squares= [];
 let currentSnake=[2,1,0];
 let direction=1;
 let appleIndex=0;
-let score= 0;
+let score=0;
 let timerId=0;
 let intervalTime=200;
+
+const eatSound= new Audio("assets/eat.mp3");
+const bgMusic = new Audio("assets/bgmusic.mp3");
+const loseMusic = new Audio("assets/lose.mp3");
 
 //creating the board
 function createBoard(){
@@ -23,19 +27,35 @@ function startGame(){
     //reset the game
     currentSnake.forEach(index => squares[index].classList.remove('snake'));
     squares[appleIndex].classList.remove('apple');
+    let end= document.getElementById("end");
+    end.innerText="";
     clearInterval(timerId);
     currentSnake=[2,1,0];
     score=0; direction =1; intervalTime=200;
     scoreDisplay.textContent=score;
     currentSnake.forEach(index => squares[index]. classList.add('snake'));
     generateApple();
-    timerId= setInterval(move,intervalTime)
+    timerId= setInterval(move,intervalTime);
+    loseMusic.pause();
+    loseMusic.currentTime=0;
+    bgMusic.play();
 
 
 }
 
+
+
+
  function endGame (){
+    let end= document.getElementById("end");
+    end.innerText= "GAME OVER💀";
+    bgMusic.pause();
+    bgMusic.currentTime=0;
+    loseMusic.play();
     return clearInterval(timerId);
+    
+    
+
  }    
 function move(){
     
@@ -43,9 +63,9 @@ function move(){
     let hitTop= (currentSnake[0] -20 <0 && direction === -20);
     let hitRight= (currentSnake[0] % 20 ===19 && direction === 1);
     let hitLeft= (currentSnake[0] % 20 === 0 && direction ===-1);
-    let hitSelf= squares[currentSnake[0] + direction]?.classList.contains('snake')
+    let hitSelf= squares[currentSnake[0] + direction]?.classList.contains('snake');
     if (hitRight||hitBot||hitTop||hitLeft|| hitSelf) {
-        return clearInterval(timerId);
+        return endGame();
     }
     const tail = currentSnake.pop();
     const newHead =currentSnake[0] +direction;
@@ -53,11 +73,15 @@ function move(){
     squares[newHead].classList.add('snake');
     currentSnake.unshift(newHead);
     if (squares[newHead].classList.contains('apple')){
+        eatSound.play();
         squares[newHead].classList.remove('apple');
         squares[tail].classList.add('snake');
         currentSnake.push(tail);
         score++; scoreDisplay.textContent= score;
+        intervalTime= intervalTime*0.95;
         generateApple();
+        clearInterval(timerId);
+        timerId=setInterval(move,intervalTime);
     }
     
     document.addEventListener('touchstart', e=> {
@@ -72,7 +96,7 @@ function move(){
     },false)
 
 
-} 
+}
 
  function handleSwipe(){
         const dx = touchEndx- touchStartx;
@@ -116,5 +140,8 @@ document.addEventListener('keydown', (E)=> {
     if(E.key === 'ArrowRight') changeDir(1);
 
 });
+
+
+
 
 
