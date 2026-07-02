@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <HTML lang="eng" DIR="ltr">
     <head>
+        <link rel="icon" type="image/png" href="assets/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+        <link rel="shortcut icon" href="assets/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+        <meta name="apple-mobile-web-app-title" content="snake" />
+        <link rel="manifest" href="assets/site.webmanifest" />
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>snake game 2026</title> 
         <link rel="stylesheet"  href="style.css">
     </head>
     <body>
-        <header id= "b"> welcome to the snake game </header id= "b">
+        
+        
         <div class="gamecon">
+            <p id="end"></p>
+            <header id= "b"> welcome to the snake game! </header>
             <h2>score:<span id="score">0</span></h2>
             <div id="grid"></div>
             <button class="arrow" onclick="startGame()">start</button>
             <button class="arrow" onclick="endGame()">suicide</button>
+            
         </div> 
-        <script src="script.js" ></script> 
+        <script src="script.js" ></script>
+       
     </body>
 </HTML>   
